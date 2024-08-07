@@ -147,7 +147,7 @@ void MainWindow::on_saveButton_clicked()
         }
     }
     double frequency = (totalWords > 0) ? (static_cast<double>(matchCount) / totalWords * 100) : 0.0;
-    out << QFileInfo(fileName).fileName() << "," << searchTerm << "," << frequency << "%" << "\n";
+    out << QFileInfo(fileName).fileName() << "," << searchTerm << "," << frequency << "\n";
 
     ui->statsLabel->setText("Results saved to " + fileName);
 }
