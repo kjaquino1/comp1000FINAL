@@ -185,7 +185,7 @@ double Readability::calculateFleschKincaidGradeLevel(int totalWords, int totalSe
 void saveResultsToCSV(const std::string& fileName, const std::string& searchTerm, double frequency) {
     std::ofstream outFile("results.csv", std::ios::app); // Open in append mode
     if (outFile.is_open()) {
-        outFile << fileName << "," << searchTerm << "," << frequency << "\n";
+        outFile << fileName << "," << searchTerm << "," << frequency << "%" << "\n";
         outFile.close();
     }
     else {

@@ -64,6 +64,8 @@ int main(int argc, char* argv[])
         search.execute(lines);
         search.displayResults();
 
+        cout << endl;
+
         // Display the number of search hits
         int matchCount = search.getMatchCount();
         cout << "Number of search hits: " << matchCount << endl;
@@ -85,8 +87,12 @@ int main(int argc, char* argv[])
         double frequency = (totalWords > 0) ? (static_cast<double>(matchCount) / totalWords * 100) : 0.0;
         cout << "Search hit frequency: " << frequency << "%" << endl;
 
+        cout << endl;
+
         // Display word counts
         stats.displayWordCounts();
+
+        cout << endl;
 
         // Display top N words if specified
         if (topN > 0) {
@@ -97,6 +103,8 @@ int main(int argc, char* argv[])
             }
         }
 
+        cout << endl;
+
         // Calculate total sentences and syllables
         int totalSentences = Readability::countSentences(lines);
         int totalSyllables = 0;
@@ -106,6 +114,8 @@ int main(int argc, char* argv[])
 
         cout << "Total Sentences: " << totalSentences << endl;
         cout << "Total Syllables: " << totalSyllables << endl;
+
+        cout << endl;
 
         // Calculate and display readability scores
         double fleschReadingEase = Readability::calculateFleschReadingEase(totalWords, totalSentences, totalSyllables);
