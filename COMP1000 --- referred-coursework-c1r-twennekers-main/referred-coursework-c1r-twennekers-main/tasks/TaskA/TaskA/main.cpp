@@ -56,9 +56,7 @@ int main(int argc, char* argv[])
         vector<string> lines = textFile.getLines();
 
         if (searchString.empty()) {
-            for (const auto& line : lines) {
-                cout << line << endl;
-            }
+            textFile.displayContent();
             return EXIT_SUCCESS;
         }
 
@@ -66,12 +64,31 @@ int main(int argc, char* argv[])
         search.execute(lines);
         search.displayResults();
 
-        Statistics stats(lines);
-        stats.displayWordCounts();
+        // Display the number of search hits
+        int matchCount = search.getMatchCount();
+        cout << "Number of search hits: " << matchCount << endl;
 
+        Statistics stats(lines);
+
+        // Calculate and display the average word length
         double averageWordLength = stats.calculateAverageWordLength();
         cout << "Average Word Length: " << averageWordLength << endl;
 
+        // Calculate and display the total number of words
+        int totalWords = 0;
+        for (const auto& entry : stats.getWordCounts()) {
+            totalWords += entry.second;
+        }
+        cout << "Total Words: " << totalWords << endl;
+
+        // Calculate and display the frequency of the search hits
+        double frequency = (totalWords > 0) ? (static_cast<double>(matchCount) / totalWords * 100) : 0.0;
+        cout << "Search hit frequency: " << frequency << "%" << endl;
+
+        // Display word counts
+        stats.displayWordCounts();
+
+        // Display top N words if specified
         if (topN > 0) {
             vector<pair<string, int>> topWords = stats.getTopNWords(topN);
             cout << "Top " << topN << " Words:" << endl;
@@ -80,27 +97,25 @@ int main(int argc, char* argv[])
             }
         }
 
-        int totalWords = 0;
-        for (const auto& entry : stats.getWordCounts()) {
-            totalWords += entry.second;
-        }
+        // Calculate total sentences and syllables
         int totalSentences = Readability::countSentences(lines);
         int totalSyllables = 0;
         for (const auto& entry : stats.getWordCounts()) {
             totalSyllables += Readability::countSyllables(entry.first) * entry.second;
         }
 
-        cout << "Total Words: " << totalWords << endl;
         cout << "Total Sentences: " << totalSentences << endl;
         cout << "Total Syllables: " << totalSyllables << endl;
 
+        // Calculate and display readability scores
         double fleschReadingEase = Readability::calculateFleschReadingEase(totalWords, totalSentences, totalSyllables);
         double fleschKincaidGradeLevel = Readability::calculateFleschKincaidGradeLevel(totalWords, totalSentences, totalSyllables);
 
         cout << "Flesch Reading Ease: " << fleschReadingEase << endl;
         cout << "Flesch-Kincaid Grade Level: " << fleschKincaidGradeLevel << endl;
 
-        double frequency = (totalWords > 0) ? (static_cast<double>(search.getMatchCount()) / totalWords * 100) : 0.0;
+
+        // Save results to CSV
         saveResultsToCSV(fileName, searchString, frequency);
 
         return EXIT_SUCCESS;

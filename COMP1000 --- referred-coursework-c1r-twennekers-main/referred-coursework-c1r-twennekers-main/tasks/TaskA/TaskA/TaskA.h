@@ -10,6 +10,7 @@ class TextFile {
 public:
     bool load(const std::string& fileName);
     std::vector<std::string> getLines() const;
+    void displayContent() const;
 
 private:
     std::vector<std::string> lines;

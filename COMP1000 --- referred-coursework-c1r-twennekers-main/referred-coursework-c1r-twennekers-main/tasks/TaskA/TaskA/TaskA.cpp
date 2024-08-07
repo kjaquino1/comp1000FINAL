@@ -26,6 +26,12 @@ vector<string> TextFile::getLines() const {
     return lines;
 }
 
+void TextFile::displayContent() const {
+    for (const auto& line : lines) {
+        cout << line << endl;
+    }
+}
+
 Search::Search(const std::string& searchTerm, bool isRegex) : searchTerm(searchTerm), isRegex(isRegex), matchCount(0) {}
 
 void Search::execute(const std::vector<std::string>& lines) {
@@ -47,6 +53,7 @@ void Search::execute(const std::vector<std::string>& lines) {
                     wordNumber++;
                     if (matchPos >= wordStart && matchPos < wordStart + word.length()) {
                         results.push_back({ lineNumber + 1, wordNumber });
+                        matchCount++;
                         break;
                     }
                     currentPos = wordStart + word.length();
@@ -69,6 +76,7 @@ void Search::execute(const std::vector<std::string>& lines) {
                     wordNumber++;
                     if (wordStart == pos) {
                         results.push_back({ lineNumber + 1, wordNumber });
+                        matchCount++;
                         break;
                     }
                     wordPos = wordStart + word.length();
@@ -173,6 +181,7 @@ double Readability::calculateFleschKincaidGradeLevel(int totalWords, int totalSe
     if (totalWords == 0 || totalSentences == 0) return 0;
     return 0.39 * (static_cast<double>(totalWords) / totalSentences) + 11.8 * (static_cast<double>(totalSyllables) / totalWords) - 15.59;
 }
+
 void saveResultsToCSV(const std::string& fileName, const std::string& searchTerm, double frequency) {
     std::ofstream outFile("results.csv", std::ios::app); // Open in append mode
     if (outFile.is_open()) {
