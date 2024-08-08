@@ -22,7 +22,7 @@ public:
     void execute(const std::vector<std::string>& lines);
     void displayResults() const;
     int getMatchCount() const { return matchCount; }
-
+     
 private:
     std::string searchTerm;
     bool isRegex;
